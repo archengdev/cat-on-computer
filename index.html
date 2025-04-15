@@ -4,11 +4,29 @@
 
 const GIF = 'IMG_0285.gif'
 const COLOR = 'black'
+const landscape = nn.width > nn.height
+const size = (landscape ? nn.height : nn.width) / 2
+const x = (nn.width - size) / 2
+const y = (nn.height - size) / 2
 
 function setup() {
-
+  nn.get('body').css({backgroundColor: COLOR})
+  instantiate()
 }
 
+function instantiate() {  
+  nn.create('img')
+  .set({src: GIF})
+  .css({
+    position: 'absolute',
+    left: x,
+    top: y,
+    width: size,
+    imageRendering: 'pixelated'
+  })
+  .addTo('body')
+  
+}
   
   
   
