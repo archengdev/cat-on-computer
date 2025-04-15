@@ -26,7 +26,8 @@ async function setup() {
 
 function instantiate(x,y,size) {  
   nn.create('img')
-  .set({src: GIF})
+  .set({
+    src: `${GIF}#${Math.random()}`})
   .css({
     position: 'absolute',
     left: x,
