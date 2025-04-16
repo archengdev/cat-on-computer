@@ -4,7 +4,9 @@
 
 const GIF = 'IMG_0285.gif'
 const COLOR = 'black'
-
+function sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
 async function setup() {
   nn.get('body').css({backgroundColor: COLOR})
   const landscape = nn.width > nn.height
@@ -19,12 +21,12 @@ async function setup() {
   const numRows = nn.height / (gif.height) / 2 + 2
   for (let i = -numCols; i <= numCols; i++){
     for (let j = -numRows; j <= numRows; j++) {
-      instantiate(x+i*gif.width,y+j*gif.height,size)
+      instantiate(x+i*gif.width,y+j*gif.height)
     }
   }
 }
 
-function instantiate(x,y,size) {  
+function instantiate(x,y) {  
   nn.create('img')
   .set({
     src: `${GIF}#${Math.random()}`})
@@ -32,15 +34,21 @@ function instantiate(x,y,size) {
     position: 'absolute',
     left: x,
     top: y,
-    // width: size,
     imageRendering: 'pixelated'
   })
   .addTo('body')
-  
+}
+
+let s = 1
+function zoom () {
+  requestAnimationFrame(zoom)
+  document.body.style.transform = `scale(${s}, ${s})`;
+  // document.body.style.transform = "scale(2,2)";
+  // document.body.style.transform = `translate(${s},10)`
+  s *=0.9995
 }
   
   
-  
 nn.on('load', setup)
-  
+nn.on('load', zoom)
 </script>
