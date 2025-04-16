@@ -7,44 +7,63 @@ const COLOR = 'black'
 function sleep (ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
+  
+const w = nn.width
+const h = nn.height
+
 async function setup() {
   nn.get('body').css({backgroundColor: COLOR})
-  const landscape = nn.width > nn.height
-  const size = (landscape ? nn.height : nn.width) / 2
-  const gif = await nn.loadImage(GIF)
   // const x = (nn.width - size) / 2
   // const y = (nn.height - size) / 2
-  const x = (nn.width - gif.width) / 2 + nn.randomInt(0, gif.width)
-  const y = (nn.height - gif.height) / 2 + nn.randomInt(0, gif.height)
+  // const x = (nn.width - gif.width) / 2 + nn.randomInt(0, gif.width)
+  // const y = (nn.height - gif.height) / 2 + nn.randomInt(0, gif.height)
   
-  const numCols = nn.width / (gif.width) / 2 + 2
-  const numRows = nn.height / (gif.height) / 2 + 2
-  for (let i = -numCols; i <= numCols; i++){
-    for (let j = -numRows; j <= numRows; j++) {
-      instantiate(x+i*gif.width,y+j*gif.height)
-    }
-  }
+  // const numCols = nn.width / (gif.width) / 2 + 2
+  // const numRows = nn.height / (gif.height) / 2 + 2
+  // for (let i = -numCols; i <= numCols; i++){
+  //   for (let j = -numRows; j <= numRows; j++) {
+  //     instantiate(x+i*gif.width,y+j*gif.height)
+  //   }
+  // }
+  instantiate(0,0)
+  createComputers(-1)
 }
-
+let sleeptime = 100
+async function createComputers(tl) {
+  for (let i = 0; i >= tl; i--) {
+    await sleep(sleeptime)
+    instantiate(tl, i)
+  }
+  for (let i = tl+1; i <= -tl; i++) {
+    await sleep(sleeptime)
+    instantiate(i, tl)
+  }
+  for (let i = tl+1; i <= 0; i++) {
+    await sleep(sleeptime)
+    instantiate(-tl,i)
+  }
+  createComputers(tl-1)
+  
+}
 function instantiate(x,y) {  
   nn.create('img')
   .set({
     src: `${GIF}#${Math.random()}`})
   .css({
     position: 'absolute',
-    left: x,
-    top: y,
+    left: x * w,
+    top: y * -h,
+    width: w,
+    height: h,
     imageRendering: 'pixelated'
   })
   .addTo('body')
 }
 
-let s = 1
+let s = 0.5
 function zoom () {
   requestAnimationFrame(zoom)
-  document.body.style.transform = `scale(${s}, ${s})`;
-  // document.body.style.transform = "scale(2,2)";
-  // document.body.style.transform = `translate(${s},10)`
+  document.body.style.transform = `scale(${s}, ${2*s})`;
   s *=0.9995
 }
   
