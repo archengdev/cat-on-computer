@@ -3,7 +3,7 @@
 /* global nn */
 
 const GIF = 'IMG_0285.gif'
-const CAT = 'cat.gif'
+const CAT = 'siamese.gif'
 const COLOR = 'black'
 function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -12,9 +12,14 @@ function sleep (ms) {
 let w = nn.width
 let h = nn.height
 
+
+
+
 async function setup() {
   nn.get('body').css({backgroundColor: COLOR})
   instantiate(0,0)
+  addCat(0,0)
+  // addCat(0.1,0.1)
   createComputers(-1)
 }
 let sleeptime = 100
@@ -55,22 +60,25 @@ function instantiate(x,y) {
     imageRendering: 'pixelated'
   })
   .addTo('body')
+  addCat(x,y)
 }
 
-function addCat(x,y) {
+async function addCat(x,y) {
+  await sleep((1+25*Math.random())*sleeptime)
   nn.create('img')
   .set({
-    src: `${GIF}#${Math.random()}`})
+    src: `${CAT}#${Math.random()}`})
   .css({
     position: 'absolute',
     left: x * w,
-    top: y * -h,
+    top: y * -h + (h/2),
     width: w,
-    height: h,
+    height: h/3,
     imageRendering: 'pixelated'
   })
   .addTo('body')
 }
+// addCat(0,0)
 let s = 0.5
 function zoom () {
   requestAnimationFrame(zoom)
