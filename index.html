@@ -12,41 +12,46 @@ function sleep (ms) {
 let w = nn.width
 let h = nn.height
 
-
-
-
 async function setup() {
   nn.get('body').css({backgroundColor: COLOR})
   instantiate(0,0)
   addCat(0,0)
-  // addCat(0.1,0.1)
   createComputers(-1)
 }
+
 let sleeptime = 100
 async function createComputers(tl) {
   for (let i = 0; i >= tl; i--) {
     await sleep(sleeptime)
     instantiate(tl, i)
   }
+  
   for (let i = tl+1; i <= -tl; i++) {
     await sleep(sleeptime)
     instantiate(i, tl)
   }
+  
   for (let i = tl+1; i <= 0; i++) {
     await sleep(sleeptime)
     instantiate(-tl,i)
   }
+  
   if (tl < -19) {
     w = nn.width / (2*s)
     h = nn.height / (2*s)
     instantiate(0,0)
     await sleep(sleeptime)
     createComputers(-1)
+    
   } else {
     createComputers(tl-1)
+    
   }
   
 }
+  
+  
+
 function instantiate(x,y) {  
   nn.create('img')
   .set({
@@ -60,6 +65,7 @@ function instantiate(x,y) {
     imageRendering: 'pixelated'
   })
   .addTo('body')
+  
   addCat(x,y)
 }
 
@@ -78,14 +84,13 @@ async function addCat(x,y) {
   })
   .addTo('body')
 }
-// addCat(0,0)
+
 let s = 0.5
 function zoom () {
   requestAnimationFrame(zoom)
   document.body.style.transform = `scale(${s}, ${2*s})`;
   s *=0.9995
 }
-  
   
 nn.on('load', setup)
 nn.on('load', zoom)
